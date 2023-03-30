@@ -1,0 +1,23 @@
+{
+  "name": "fieldsites",
+  "version": "1.0.0",
+  "description": "This is the sample application for the [*Ruby on Rails Tutorial: Learn Web Development with Rails*](https://www.railstutorial.org/) by [Michael Hartl](https://www.michaelhartl.com/).",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himb-projects/fieldsites.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/himb-projects/fieldsites/issues"
+  },
+  "homepage": "https://github.com/himb-projects/fieldsites#readme"
+}
