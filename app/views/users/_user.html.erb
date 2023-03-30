@@ -1,0 +1,23 @@
+<li class="list-group-item">
+  <div class="row">
+    <div class="col-md-3">
+      <%= link_to user.name, user %>
+    </div>
+    <div class="col-md-3">
+      <%= mail_to user.email %>
+    </div>
+    <div class="col-md-1">
+      <%= user.sites.count %>
+    </div>
+    <div class="col-md-1">
+      <%= user.projects.count %>
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-1">
+      <% if current_user.admin? && !current_user?(user) %>
+        <%= link_to "delete", user, method: :delete, data: { confirm: "You sure?" } %>
+      <% end %>
+    </div>
+  </div>
+</li>

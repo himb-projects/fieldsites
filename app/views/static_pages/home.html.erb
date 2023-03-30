@@ -1,0 +1,8 @@
+<% provide(:title, 'Home') %>
+
+<div class="row">
+  <div class="jumbotron">
+    <h1>Database of fieldsites at HIMB</h1>
+    <p>As of today, there are <%= Project.all.count %> projects and <%= Site.all.count %> sites.</p>
+  </div>
+</div>

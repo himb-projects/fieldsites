@@ -1,0 +1,130 @@
+<div class="row">
+	<div class="col-md-12">
+
+    <h1>Project:
+      <%= @project.project_name %>
+    </h1>
+
+    <p>
+      <%= markdown(@project.project_details) %>
+    </p>
+
+    <p>
+      <strong>Permit:</strong>
+			<% if @project.permit.present? %>
+      	<%= @project.permit %>
+			<% else %>
+				<span class="label label-danger">Not entered</span>
+			<% end %>
+    </p>
+
+    <p>
+      <strong>Start date:</strong>
+      <%= @project.start_date %>
+    </p>
+
+    <p>
+      <strong>End date:</strong>
+      <%= @project.end_date %>
+    </p>
+
+    <p>
+      <strong>Contact:</strong>
+			<%= link_to @project.user.name, @project.user %> (<%= mail_to @project.user.email %>)
+    </p>
+
+		<p>
+	    <%= link_to 'Edit', edit_project_path(@project) %> |
+	    <%= link_to 'Back', projects_path %>
+			<% if logged_in? && current_user.admin? %>
+				<%= link_to 'Delete project', @project, method: :delete, data: { confirm: 'You sure?' }, class: 'btn btn-xs btn-danger pull-right' %>
+			<% end %>
+		</p>
+
+	<h3>Fieldsites (<%= @project.sites.count %>)</h3>
+	<p>Download project sites: <%= link_to "CSV", project_path(format: "csv") %></p>
+
+
+  <% if @project.sites.count > 0 %>
+
+	<div id='map'></div>
+	<br>
+
+	<ul class="list-group">
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-md-2">
+					<strong>Site name</strong>
+				</div>
+				<div class="col-md-2">
+					<strong>Site description</strong>
+				</div>
+				<div class="col-md-2">
+					<strong>Latitude</strong>
+				</div>
+				<div class="col-md-2">
+					<strong>Longitude</strong>
+				</div>
+				<div class="col-md-2">
+					<strong>Color</strong>
+				</div>
+				<div class="col-md-2">
+					<strong>Site can be shared</strong>
+				</div>
+			</div>
+		</li>
+		<%= render @project.sites %>
+	</ul>
+
+<% else %>
+    <% if current_user?(@project.user) %>
+      <div class="alert alert-danger">"Edit Project" to add sites.</div>
+    <% else %>
+      <div class="alert alert-danger"><%= @project.user.name %> hasn't added any sites and measurements to this project yet.</div>
+    <% end %>
+  <% end %>
+
+  </div>
+</div>
+
+<script>
+  function initMap() {
+		var bounds = new google.maps.LatLngBounds();
+		var sites = <%= raw @project.sites.map {|i| [i.site_name.to_s, i.latitude.to_s, i.longitude.to_s, i.id.to_s, i.color.to_s] } %>;
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+			maxZoom: 19,
+			// zoom: 13,
+      // center: new google.maps.LatLng(21.458369, -157.807275),
+      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      streetViewControl: false
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < sites.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(sites[i][1], sites[i][2]),
+				icon: {
+          url: 'http://maps.google.com/mapfiles/ms/icons/'+sites[i][4]+'.png'
+        },
+        map: map
+      });
+
+			bounds.extend(marker.position);
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent('<a data-no-turbolink="true" href="/sites/'+sites[i][3]+'">'+sites[i][0]+'</a>');
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+		map.fitBounds(bounds);
+
+  }
+  $(document).ready(initMap);
+  $(document).on('page:load', initMap);
+</script>

@@ -1,0 +1,112 @@
+<div class="row">
+	<div class="col-md-12">
+
+    <h3>Fieldsite:
+      <%= @site.site_name %>
+    </h3>
+
+		<p>
+      <%= markdown(@site.site_description) %>
+    </p>
+
+    <p>
+      <strong>Latitude:</strong>
+      <%= @site.latitude %>
+    </p>
+
+    <p>
+      <strong>Longitude:</strong>
+      <%= @site.longitude %>
+    </p>
+
+		<p>
+      <p><strong>Icon:</strong>
+			<%= image_tag 'http://maps.google.com/mapfiles/ms/icons/'+@site.color+'.png', style: 'height:15px;width:auto;' %></p>
+    </p>
+
+    <p>
+      <strong>Shared:</strong>
+			<% if @site.shared %>
+				<span class='glyphicon glyphicon-ok-circle', style='color:green'></span>
+			<% else %>
+				<span class='glyphicon glyphicon-remove-circle', style='color:red'></span>
+			<% end %>
+    </p>
+
+		<p>
+      <strong>Contact:</strong>
+      <%= link_to @site.user.name, @site.user %> (<%= mail_to @site.user.email %>)
+    </p>
+
+		<p>
+	    <%= link_to 'Edit', edit_site_path(@site) %> |
+	    <%= link_to 'Back', sites_path %>
+			<% if logged_in? && current_user.admin? %>
+				<%= link_to 'Delete site', @site, method: :delete, data: { confirm: 'You sure?' }, class: 'btn btn-xs btn-danger pull-right' %>
+			<% end %>
+		</p>
+
+		<p></p>
+
+		<h3>Projects using this fieldsite (<%= @site.projects.count %>)</h3>
+    <% if @site.projects.any? %>
+			<ul class="list-group">
+				<li class="list-group-item">
+					<div class="row">
+						<div class="col-md-2">
+							<strong>Project name</strong>
+						</div>
+						<div class="col-md-3">
+							<strong>Project description</strong>
+						</div>
+						<div class="col-md-2">
+							<strong>Start date</strong>
+						</div>
+						<div class="col-md-2">
+							<strong>End date</strong>
+						</div>
+						<div class="col-md-2">
+							<strong>PI</strong>
+						</div>
+						<div class="col-md-1">
+						</div>
+					</div>
+				</li>
+      <ul class="list-group">
+        <%= render @projects %>
+      </ul>
+		<% end %>
+
+		<div id='map'></div>
+
+  </div>
+</div>
+
+<script>
+  function initMap() {
+		var site = <%= raw [@site.site_name.to_s, @site.latitude.to_s, @site.longitude.to_s, @site.id.to_s, @site.color.to_s] %>;
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 17,
+      center: new google.maps.LatLng(site[1], site[2]),
+      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      streetViewControl: false
+    });
+
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(site[1], site[2]),
+			icon: {
+				url: 'http://maps.google.com/mapfiles/ms/icons/'+site[4]+'.png'
+			},
+      map: map
+    });
+
+    marker.addListener('click', () => {
+			infowindow.setContent('<a data-no-turbolink="true" href="/sites/'+site[3]+'">'+site[0]+'</a>');
+      infowindow.open(map, marker);
+    });
+
+  }
+  $(document).ready(initMap);
+  $(document).on('page:load', initMap);
+</script>

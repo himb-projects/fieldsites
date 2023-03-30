@@ -1,0 +1,41 @@
+<% provide(:title, 'All users') %>
+
+<div class="row">
+	<div class="col-md-12">
+    <h3>Users</h3>
+
+		<% if current_user.admin? %>
+			<p>Download users: <%= link_to "CSV", users_path(format: "csv") %></p>
+		<% end %>
+
+    <%= will_paginate %>
+
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-md-3">
+						<strong>Name</strong>
+					</div>
+					<div class="col-md-3">
+						<strong>Email</strong>
+					</div>
+					<div class="col-md-1">
+						<strong>Sites</strong>
+					</div>
+					<div class="col-md-1">
+						<strong>Projects</strong>
+					</div>
+					<div class="col-md-1">
+						<strong></strong>
+					</div>
+					<div class="col-md-1">
+						<strong></strong>
+					</div>
+				</div>
+			</li>
+      <%= render @users %>
+    </ul>
+
+    <%= will_paginate %>
+  </div>
+</div>

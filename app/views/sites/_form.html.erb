@@ -1,0 +1,61 @@
+<%= form_with(model: site, local: true) do |form| %>
+  <% if site.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(site.errors.count, "error") %> prohibited this site from being saved:</h2>
+
+      <ul>
+        <% site.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :site_name %>
+    <%= form.text_field :site_name, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :site_description %>
+    <%= form.text_area :site_description, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :icon %>
+    Here's a list: <%= link_to "https://sites.google.com/site/gmapsdevelopment/", "https://sites.google.com/site/gmapsdevelopment/" %>
+    <%= form.text_field :color, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shared %>
+    <%= form.check_box :shared, class: 'form-control' %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="field">
+        <%= form.label :pi %>
+        <% if @site.persisted? %>
+          <%= form.select :user_id, User.all.collect {|a| [a.name, a.id]}, {:selected => @site.user_id}, class: "input-medium", class: 'form-control' %></p>
+        <% else %>
+          <%= form.select :user_id, User.all.collect {|a| [a.name, a.id]}, {:selected => current_user.id}, class: "input-medium", class: 'form-control' %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save changes", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,69 @@
+<%= form_with(model: project, local: true) do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+        <% project.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :project_name %>
+    <%= form.text_field :project_name, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :project_details %>
+    <%= form.text_area :project_details, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :permit %>
+    <%= form.text_field :permit, class: 'form-control' %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="field">
+        <%= form.label :start_date %>
+        <%= form.date_select :start_date, options = { start_year: 1960 }, class: 'form-control', type: 'date' %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="field">
+        <%= form.label :end_date %>
+        <%= form.date_select :end_date, options = { end_year: Date.today.year + 10 }, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="field">
+        <%= form.label :contact %>
+        <% if @project.persisted? %>
+          <%= form.select :user_id, User.order('name ASC').collect {|a| [a.name, a.id]}, {:selected => @project.user_id}, class: "input-medium", class: 'form-control' %>*Please only change PI if you've talked with <%= @project.user.name %>.
+        <% else %>
+          <%= form.select :user_id, User.order('name ASC').collect {|a| [a.name, a.id]}, {:selected => current_user.id}, class: "input-medium", class: 'form-control' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <h1>Sites</h1>
+
+  <%= form.fields_for :project_sites do |project_site| %>
+    <%= render "project_site_fields", :f => project_site %>
+  <% end %>
+  <div class="links">
+    <p><%= link_to_add_association "Add Site", form, :project_sites %></p>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save changes", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+<div class="nested-fields">
+  <div class="row">
+    <div class="col-md-6">
+      <%= f.select :site_id, Site.order('site_name ASC').collect {|a| [a.site_name, a.id]}, {:include_blank => 'Choose site...'}, class: "form-control" %>
+    </div>
+
+    <div class="col-md-6">
+      <p class="pull-left"><%= link_to_remove_association "remove site", f %></p>
+    </div>
+  </div>
+</div>

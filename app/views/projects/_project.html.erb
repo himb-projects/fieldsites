@@ -1,0 +1,25 @@
+<li class="list-group-item">
+  <div class="row">
+    <div class="col-md-2">
+      <p><%= link_to project.project_name, project %>
+      (<%= project.sites.count %> sites)</p>
+    </div>
+    <div class="col-md-3">
+      <%= truncate(project.project_details, length: 50) %>
+    </div>
+    <div class="col-md-2">
+      <%= project.start_date %>
+    </div>
+    <div class="col-md-2">
+      <%= project.end_date %>
+    </div>
+    <div class="col-md-2">
+      <%= link_to project.user.name, project.user %>
+    </div>
+    <div class="col-md-1">
+      <% if current_user?(project.user) || current_user.admin? %>
+        <%= link_to "delete", project, method: :delete, data: { confirm: "You sure?" }, title: project.project_name %>
+      <% end %>
+    </div>
+  </div>
+</li>
