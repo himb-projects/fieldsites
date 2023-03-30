@@ -22,6 +22,7 @@ gem "bootsnap",                   "1.12.0", require: false
 gem 'redcarpet'
 gem 'cocoon'
 gem 'gmaps4rails'
+gem 'jquery-turbolinks'
 
 group :development, :test do
   gem "sqlite3", "1.4.2"
