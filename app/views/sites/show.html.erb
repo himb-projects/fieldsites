@@ -20,8 +20,8 @@
     </p>
 
 		<p>
-      <p><strong>Icon:</strong>
-			<%= image_tag 'http://maps.google.com/mapfiles/ms/icons/'+@site.color+'.png', style: 'height:15px;width:auto;' %></p>
+      <strong>Icon:</strong>
+			<%= @site.color %>
     </p>
 
     <p>
@@ -96,17 +96,14 @@
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(site[1], site[2]),
 			icon: {
-				url: 'http://maps.google.com/mapfiles/ms/icons/'+site[4]+'.png'
-			},
+      	path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+      	scale: 5,
+				strokeColor: site[4],
+    	},
       map: map
     });
 
-    marker.addListener('click', () => {
-			infowindow.setContent('<a data-no-turbolink="true" href="/sites/'+site[3]+'">'+site[0]+'</a>');
-      infowindow.open(map, marker);
-    });
-
   }
-  $(document).ready(initMap);
-  $(document).on('page:load', initMap);
+	$(document).ready(initMap);
+	$(document).on('page:load', initMap);
 </script>

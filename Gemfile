@@ -22,6 +22,8 @@ gem "bootsnap",                   "1.12.0", require: false
 gem 'redcarpet'
 gem 'cocoon'
 gem 'gmaps4rails'
+gem "jquery-rails"
+gem "bootstrap"
 gem 'jquery-turbolinks'
 
 group :development, :test do

@@ -57,9 +57,11 @@
     for (i = 0; i < sites.length; i++) {
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(sites[i][1], sites[i][2]),
-        icon: {
-          url: 'http://maps.google.com/mapfiles/ms/icons/'+sites[i][4]+'.png'
-        },
+				icon: {
+	      	path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+	      	scale: 5,
+					strokeColor: sites[i][4],
+	    	},
         map: map
       });
 

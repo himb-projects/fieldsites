@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= javascript_importmap_tags %>
 
-    <script async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBJG1Hc3Z4RxhlbmvsHvzXakd_pCZjD_5I&callback=initMap'
-      type="text/javascript"></script>
+    <script async defer src='https://maps.googleapis.com/maps/api/js?key=<%=Rails.application.credentials.google_maps_api_key%>&callback=initMap' type="text/javascript"></script>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
     <%= render 'layouts/shim' %>
 
   </head>

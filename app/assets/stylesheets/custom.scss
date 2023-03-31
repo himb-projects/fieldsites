@@ -11,6 +11,13 @@ $gray-medium-light: #eaeaea;
   box-sizing:         border-box;
 }
 
+#map {
+  min-width: 200px;
+  width: 99%;
+  min-height: 200px;
+  height: 600px;
+}
+
 /* universal */
 
 body {
